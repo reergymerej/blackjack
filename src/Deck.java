@@ -34,6 +34,10 @@ public class Deck {
 	public void shuffle() {
 		Collections.shuffle(cards);
 	}
+	
+	public Card getCard() {
+		return this.cards.remove(0);
+	}
 
 	public void debug() {
 		for (int i = 0; i < cards.size(); i++) {
