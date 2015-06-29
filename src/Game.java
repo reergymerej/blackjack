@@ -25,6 +25,7 @@ public class Game {
 			playerTurn();
 			System.out.println("-------------");
 			if (player.isBust()) {
+				showStatus(player);
 				lose();
 			} else {
 				dealerTurn();
@@ -89,7 +90,7 @@ public class Game {
 	}
 	
 	private void log(String msg) {
-		System.out.println(msg + ": " + player.getHandValue());
+		System.out.println(msg);
 	}
 	
 	private void playerTurn() {
