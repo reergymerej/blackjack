@@ -29,6 +29,8 @@ public class Player {
 			output += " " + card.getAppearance();
 		}
 		
+		output += getVisibleHandValue();
+		
 		System.out.println(output);
 	}
 	
@@ -49,5 +51,30 @@ public class Player {
 	
 	public boolean isBust() {
 		return getHandValue() > 21;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void showAllCards() {
+		cards.get(0).turn();
+	}
+	
+	private String getVisibleHandValue() {
+		boolean hasFaceDownCard = false;
+		String output = " (hand value: ";
+		
+		for (int i = 0; i < cards.size() && !hasFaceDownCard; i++) {
+			hasFaceDownCard = hasFaceDownCard || !cards.get(i).isUp();
+		}
+		
+		if (!hasFaceDownCard) {
+			output += getHandValue();
+		} else {
+			output += "?";
+		}
+		
+		return output + ")";
 	}
 }

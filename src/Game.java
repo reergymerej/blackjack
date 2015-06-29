@@ -49,9 +49,9 @@ public class Game {
 		String input = null;
 		Move move = null;
 		
-		showStatus();
 		do {
-			System.out.println(player.getHandValue() + ": (h)it or (s)tay?");
+			showStatus();
+			System.out.println("(h)it or (s)tay?");
 			Console console = System.console();
 			input = (String) console.readLine();
 		} while (!input.equals("h") && !input.equals("s"));
@@ -88,6 +88,8 @@ public class Game {
 	
 	private void playerTurn() {
 		boolean playerWantsToMove = true;
+
+		notifyPlayerTurn(player);
 		
 		while (!player.isBust() && playerWantsToMove) {
 			Move playerMove = getPlayerMove();
@@ -104,6 +106,19 @@ public class Game {
 	}
 	
 	private void dealerTurn() {
-		System.out.println("dealer turn");
+		notifyPlayerTurn(dealer);
+		
+		dealer.showAllCards();
+		showStatus();
+		
+		while (!dealer.isBust() && dealer.getHandValue() < 16) {
+			System.out.println("hits");
+			deal(dealer, 1);
+			showStatus();
+		}
+	}
+	
+	private void notifyPlayerTurn(Player player) {
+		System.out.println(player.getName() + "'s turn");
 	}
 }
