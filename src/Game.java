@@ -21,10 +21,14 @@ public class Game {
 			deal(dealer, 2);
 			deal(player, 2);
 			
-//			TODO: Get card or stay?
-			while (playerCanMove(player)) {
-				String playerMove = getPlayerMove();
-				System.out.println("player move: " + playerMove);
+			playerTurn();
+			System.out.println("-------------");
+			if (player.isBust()) {
+				lose();
+			} else {
+				
+				dealerTurn();
+				System.out.println("-------------");
 			}
 		}
 	}
@@ -33,37 +37,73 @@ public class Game {
 		Card card;
 		for (int i = 0; i < count; i++) {
 			card = deck.getCard();
-			if (count > 1 && i > 0 || count == 1) {
+			
+			if (!(player == dealer && count > 1 && i == 0)) {
 				card.turn();
 			}
 			player.giveCard(card);
 		}
 	}
 	
-	private String getPlayerMove() {
+	private Move getPlayerMove() {
 		String input = null;
+		Move move = null;
 		
+		showStatus();
 		do {
-			System.out.println("-------------");
-			showStatus();
-			System.out.println("(h)it or (s)tay?");
+			System.out.println(player.getHandValue() + ": (h)it or (s)tay?");
 			Console console = System.console();
 			input = (String) console.readLine();
 		} while (!input.equals("h") && !input.equals("s"));
+		
+		if (input.equals("h")) {
+			move = Move.HIT;
+		} else if (input.equals("s")) {
+			move = Move.STAY;
+		}
 
-		return input;
+		return move;
 	}
 	
 	private void showStatus() {
 		dealer.showStatus();
 		player.showStatus();
 	}
+		
+	private void lose() {
+		log("you lose");
+	}
 	
-	private boolean playerCanMove(Player player) {
-		boolean canMove = true;
+	private void win() {
+		log("you win");
+	}
+	
+	private void tie() {
+		log("tie");
+	}
+	
+	private void log(String msg) {
+		System.out.println(msg + ": " + player.getHandValue());
+	}
+	
+	private void playerTurn() {
+		boolean playerWantsToMove = true;
 		
-		
-		
-		return canMove;
+		while (!player.isBust() && playerWantsToMove) {
+			Move playerMove = getPlayerMove();
+			
+			switch (playerMove) {
+			case HIT:
+				deal(player, 1);
+				break;
+			case STAY:
+				playerWantsToMove = false;
+				break;
+			}
+		}
+	}
+	
+	private void dealerTurn() {
+		System.out.println("dealer turn");
 	}
 }

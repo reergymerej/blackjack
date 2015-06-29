@@ -46,4 +46,8 @@ public class Player {
 
 		return value;
 	}
+	
+	public boolean isBust() {
+		return getHandValue() > 21;
+	}
 }
