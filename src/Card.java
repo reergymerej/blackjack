@@ -3,6 +3,7 @@ public class Card {
 	private Suit suit;
 	private int value;
 	private Face face;
+	private boolean up = false;
 	
 	public Card(Suit suit, int value, Face face) {
 		this.suit = suit;
@@ -23,11 +24,31 @@ public class Card {
 	}
 	
 	public void debug() {
+		System.out.println(getAppearance());
+	}
+	
+	public String getAppearance() {
 		Face face = getFace();
-		if (face == null) {
-			System.out.println(getValue() + " " + getSuit());
+		String status;
+		
+		if (!isUp()) {
+			status = "?";
 		} else {
-			System.out.println(face + " " + getSuit());
+			if (face == null) {
+				status = getValue() + " " + getSuit();
+			} else {
+				status = face + " " + getSuit();
+			}
 		}
+		
+		return "[" + status + "]";
+	}
+	
+	public void turn() {
+		up = true;
+	}
+	
+	public boolean isUp() {
+		return up;
 	}
 }
