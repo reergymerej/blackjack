@@ -14,6 +14,8 @@ public class Game {
 		gameOver = false;
 		deck = new Deck();
 		
+		System.out.println("Black Jack!\n-------------------");
+		
 //		TODO: game loop
 		if (!gameOver) {
 			deal(dealer, 2);
@@ -42,8 +44,9 @@ public class Game {
 		String input = null;
 		
 		do {
+			System.out.println("-------------");
 			showStatus();
-			System.out.println("(h)it or (s)tay");
+			System.out.println("(h)it or (s)tay?");
 			Console console = System.console();
 			input = (String) console.readLine();
 		} while (!input.equals("h") && !input.equals("s"));
