@@ -20,15 +20,17 @@ public class Game {
 		if (!gameOver) {
 			deal(dealer, 2);
 			deal(player, 2);
+			showStatus();
 			
 			playerTurn();
 			System.out.println("-------------");
 			if (player.isBust()) {
 				lose();
 			} else {
-				
 				dealerTurn();
 				System.out.println("-------------");
+				
+				determineWinner();
 			}
 		}
 	}
@@ -50,7 +52,7 @@ public class Game {
 		Move move = null;
 		
 		do {
-			showStatus();
+			showStatus(player);
 			System.out.println("(h)it or (s)tay?");
 			Console console = System.console();
 			input = (String) console.readLine();
@@ -67,6 +69,10 @@ public class Game {
 	
 	private void showStatus() {
 		dealer.showStatus();
+		player.showStatus();
+	}
+	
+	private void showStatus(Player player) {
 		player.showStatus();
 	}
 		
@@ -106,19 +112,34 @@ public class Game {
 	}
 	
 	private void dealerTurn() {
+		int HIT_UNDER = 17;
+		
 		notifyPlayerTurn(dealer);
 		
 		dealer.showAllCards();
-		showStatus();
+		showStatus(dealer);
 		
-		while (!dealer.isBust() && dealer.getHandValue() < 16) {
+		while (!dealer.isBust() && dealer.getHandValue() < HIT_UNDER) {
 			System.out.println("hits");
 			deal(dealer, 1);
-			showStatus();
+			showStatus(dealer);
 		}
 	}
 	
 	private void notifyPlayerTurn(Player player) {
 		System.out.println(player.getName() + "'s turn");
+	}
+	
+	private void determineWinner() {
+		int playerHandValue = player.getHandValue();
+		int dealerHandValue = dealer.getHandValue();
+		
+		if (dealer.isBust() || playerHandValue > dealerHandValue) {
+			win();
+		} else if (playerHandValue == dealerHandValue) {
+			tie();
+		} else {
+			lose();
+		}
 	}
 }
